@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S. Furkan Kahraman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    // Apply theme before paint to prevent flash
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <style>
+    /* ── CSS Variables ── */
+    :root {
+      --bg-primary: #fafaf8;
+      --bg-secondary: #f2f0eb;
+      --bg-card: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #5a5a5a;
+      --text-muted: #8a8a8a;
+      --accent: #2d5a27;
+      --accent-light: #3d7a35;
+      --accent-subtle: rgba(45, 90, 39, 0.08);
+      --accent-border: rgba(45, 90, 39, 0.15);
+      --border: #e2e0db;
+      --border-light: #eceae5;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-sans: 'DM Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --max-width: 820px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Dark Mode ── */
+    [data-theme="dark"] {
+      --bg-primary: #111110;
+      --bg-secondary: #1a1a18;
+      --bg-card: #1e1e1c;
+      --text-primary: #e8e6e1;
+      --text-secondary: #a8a6a0;
+      --text-muted: #6e6c68;
+      --accent: #5cb450;
+      --accent-light: #72cc66;
+      --accent-subtle: rgba(92, 180, 80, 0.1);
+      --accent-border: rgba(92, 180, 80, 0.2);
+      --border: #2a2a28;
+      --border-light: #222220;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    [data-theme="dark"] nav {
+      background: rgba(17, 17, 16, 0.85);
+    }
+
+    [data-theme="dark"] .nav-links.open {
+      background: rgba(17, 17, 16, 0.97);
+    }
+
+    [data-theme="dark"] .hero-photo {
+      border-color: var(--border);
+    }
+
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: white;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    a:hover { color: var(--accent-light); }
+
+    /* ── Scroll Progress Bar ── */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1000;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 248, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
+      transition: box-shadow var(--transition);
+    }
+    nav.scrolled { box-shadow: var(--shadow-sm); }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .nav-name {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      transition: all var(--transition);
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+      background: var(--accent-subtle);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text-primary);
+      margin: 4px 0;
+      transition: all var(--transition);
+      border-radius: 1px;
+    }
+
+    /* ── Theme Toggle ── */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      color: var(--text-secondary);
+      transition: all var(--transition);
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      background: var(--accent-subtle);
+    }
+    .theme-toggle svg { width: 16px; height: 16px; }
+    .theme-toggle .icon-moon { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ── Main Content ── */
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      padding: 4rem 0 3rem;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 3px solid var(--border-light);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-photo .placeholder-avatar {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-subtle);
+    }
+
+    .hero-info { padding-top: 0.25rem; }
+
+    .hero-name {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-affiliation {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .hero-affiliation a { font-weight: 500; }
+
+    .hero-email {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+    .hero-email a {
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+    .hero-email a:hover { color: var(--accent); }
+
+    .hero-links {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--bg-card);
+      transition: all var(--transition), background-color 0.4s ease;
+    }
+    .hero-link:hover {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      background: var(--accent-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+    .hero-link svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── About / Intro Paragraph ── */
+    .about {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .about p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 680px;
+    }
+    .about strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ── Section Styles ── */
+    .section {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-header {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    /* ── Timeline Entries (Education, Experience) ── */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+
+    .timeline-entry {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 1.5rem;
+      padding: 1.15rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+    .timeline-entry:first-child { border-top: none; padding-top: 0; }
+
+    .timeline-date {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-top: 0.15rem;
+      white-space: nowrap;
+    }
+
+    .timeline-duration {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      opacity: 0.75;
+      margin-top: 0.3rem;
+    }
+
+    .timeline-content h3 {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      line-height: 1.4;
+    }
+
+    .timeline-content .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.15rem;
+    }
+
+    .timeline-content .detail {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .timeline-content .detail em {
+      font-style: normal;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .timeline-content .advisor {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .timeline-content .advisor a {
+      font-weight: 500;
+    }
+
+    .timeline-content .description {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-top: 0.4rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--accent-subtle);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      margin-top: 0.3rem;
+    }
+
+    /* ── Publication Entry ── */
+    .pub-entry {
+      padding: 1.15rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+    .pub-entry:first-child { border-top: none; padding-top: 0; }
+
+    .pub-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      line-height: 1.45;
+      margin-bottom: 0.25rem;
+    }
+    .pub-title a { color: var(--text-primary); }
+    .pub-title a:hover { color: var(--accent); }
+
+    .pub-authors {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.2rem;
+      line-height: 1.55;
+    }
+    .pub-authors .me { font-weight: 600; color: var(--text-primary); }
+
+    .pub-venue {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── Project Cards ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.35rem;
+      transition: all var(--transition), background-color 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .project-card:hover {
+      border-color: var(--accent-border);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      line-height: 1.35;
+    }
+
+    .project-card .project-course {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-card p {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+    }
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      border: 1px solid var(--border-light);
+    }
+
+    /* ── Awards / Honors ── */
+    .awards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .award-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+    .award-item:first-child { border-top: none; padding-top: 0; }
+
+    .award-year {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding-top: 0.1rem;
+    }
+
+    .award-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .award-text strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── Skills ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+    }
+
+    .skill-row {
+      display: contents;
+    }
+
+    .skill-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      padding: 0.7rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+    .skill-row:first-child .skill-label,
+    .skill-row:first-child .skill-value { border-top: none; }
+
+    .skill-value {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      padding: 0.7rem 0;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .skill-value code {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      background: var(--bg-secondary);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      margin-right: 0.25rem;
+      border: 1px solid var(--border-light);
+    }
+
+    /* ── Footer ── */
+    footer {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 2rem 2rem 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    footer .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto 1.25rem;
+    }
+
+    footer a { color: var(--text-secondary); font-weight: 500; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-in {
+      animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .hero { animation-delay: 0.05s; }
+    .about { animation-delay: 0.1s; }
+
+    .stagger-1 { animation-delay: 0.15s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.25s; }
+    .stagger-4 { animation-delay: 0.3s; }
+    .stagger-5 { animation-delay: 0.35s; }
+    .stagger-6 { animation-delay: 0.4s; }
+    .stagger-7 { animation-delay: 0.45s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+        padding: 3rem 0 2.5rem;
+      }
+      .hero-photo {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+      }
+      .hero-links { justify-content: center; }
+
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: rgba(250, 250, 248, 0.97);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        padding: 0.5rem 1rem;
+      }
+      .nav-toggle { display: block; }
+
+      .timeline-entry {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+      }
+
+      .projects-grid { grid-template-columns: 1fr; }
+
+      .skills-grid { grid-template-columns: 1fr; }
+      .skill-label { padding-bottom: 0; border-top: 1px solid var(--border-light); padding-top: 0.7rem; }
+      .skill-value { padding-top: 0.2rem; border-top: none; }
+
+      .award-item { grid-template-columns: 1fr; gap: 0.15rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Scroll Progress Indicator -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <span class="nav-name">S. F. Kahraman</span>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ════ Hero Section ════ -->
+  <section class="hero animate-in">
+    <div class="hero-photo">
+      <img src="Furkan_Kahraman.jpg" alt="S. Furkan Kahraman">
+    </div>
+    <div class="hero-info">
+      <h1 class="hero-name">Satılmış Furkan Kahraman</h1>
+      <div class="hero-affiliation">
+        M.Sc. Student in Electrical &amp; Electronics Engineering<br>
+        <a href="https://ee.bilkent.edu.tr/" target="_blank">Bilkent University</a> · Ankara, Turkey
+      </div>
+      <div class="hero-email"><a href="mailto:s.furkankahraman@gmail.com">s.furkankahraman@gmail.com</a></div>
+      <div class="hero-links">
+        <a class="hero-link" href="data/cv.pdf" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          CV
+        </a>
+        <a class="hero-link" href="https://github.com/sfurkankahraman" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a class="hero-link" href="https://scholar.google.com/citations?user=erNaktwAAAAJ&hl=tr" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+          Scholar
+        </a>
+        <a class="hero-link" href="https://www.linkedin.com/in/furkan-kahraman-5ab1b3165/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ About ════ -->
+  <section class="about animate-in" id="about">
+    <p>
+      I am a M.Sc. student in Electrical and Electronics Engineering at
+      <a href="https://ee.bilkent.edu.tr/" target="_blank">Bilkent University</a>, working at the
+      <a href="https://umram.bilkent.edu.tr/" target="_blank">National Magnetic Resonance Research Center (UMRAM)</a>.
+      My research interests span <strong>Medical Imaging</strong>, <strong>Image Processing</strong>,
+      <strong>Signal Processing</strong>, and <strong>Hardware Design &amp; Implementation</strong>,
+      with a current focus on advancing magnetic particle imaging (MPI) techniques
+      for in vivo applications.
+      <!-- Phase 2: Expand with MPI, RF/Microwave, signal processing details -->
+    </p>
+  </section>
+
+  <!-- ════ Education ════ -->
+  <section class="section animate-in stagger-1" id="education">
+    <h2 class="section-header">Education</h2>
+    <div class="timeline">
+      <div class="timeline-entry">
+        <div class="timeline-date">2025 – 2028</div>
+        <div class="timeline-content">
+          <h3>M.Sc. in Electrical &amp; Electronics Engineering</h3>
+          <div class="subtitle">Bilkent University · Ankara, Turkey</div>
+          <div class="detail"><em>CGPA:</em> 3.42 / 4.00</div>
+          <div class="detail"><em>Coursework:</em> EEE 525 Advanced Signal Processing, EEE 575 Medical Image Reconstruction and Processing, EEE 552 Antenna Engineering, EEE 512 Microwave Electronics, NSC 546 Computing for Neuroscience</div>
+        </div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-date">2021 – 2025</div>
+        <div class="timeline-content">
+          <h3>B.Sc. in Electrical &amp; Electronics Engineering</h3>
+          <div class="subtitle">Bilkent University · Ankara, Turkey</div>
+          <div class="detail"><em>CGPA:</em> 3.38 / 4.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Research & Experience ════ -->
+  <section class="section animate-in stagger-2" id="research">
+    <h2 class="section-header">Research &amp; Experience</h2>
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Jun 2024 –<br>Sep 2024<span class="timeline-duration">4 mos</span></div>
+        <div class="timeline-content">
+          <h3>Research Intern</h3>
+          <div class="subtitle">Institute of Biomedical Imaging (IBI), Technical University of Hamburg</div>
+          <div class="advisor">Advisor: <a href="https://www.tuhh.de/ibi/people/tobias-knopp-head-of-institute" target="_blank">Prof. Dr. Tobias Knopp</a></div>
+          <p class="description">
+            Simulation and design of MPI subsystems. Design and implementation of a 3D Helmholtz/Maxwell coil for magnetic sensor calibration.
+            <!-- Phase 2: Technical details -->
+          </p>
+          <span class="badge">International</span>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Aug 2023 –<br>Present<span class="timeline-duration">2 yrs 11 mos</span></div>
+        <div class="timeline-content">
+          <h3>Undergraduate Researcher</h3>
+          <div class="subtitle">National Magnetic Resonance Research Center (UMRAM), Bilkent University</div>
+          <div class="advisor">Advisor: <a href="http://kilyos.ee.bilkent.edu.tr/~saritas/" target="_blank">Assoc. Prof. Emine Ulku Saritas</a></div>
+          <p class="description">
+            Research on advancing magnetic particle imaging (MPI) techniques for in vivo imaging using magnetic nanoparticles (MNPs). Designed and developed a magnetic particle spectrometer (MPS) for characterizing MNP magnetization response.
+            <!-- Phase 2: Detailed MPI methodology -->
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Aug 2023 –<br>Sep 2023<span class="timeline-duration">2 mos</span></div>
+        <div class="timeline-content">
+          <h3>Research Intern</h3>
+          <div class="subtitle">UMRAM, Bilkent University</div>
+          <p class="description">
+            Magnetic field simulations and 3D design of the Magnetic Particle Spectrometer setup.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Jun 2023 –<br>Jul 2023<span class="timeline-duration">2 mos</span></div>
+        <div class="timeline-content">
+          <h3>Intern</h3>
+          <div class="subtitle">Helicopter Maintenance Factory, Ministry of National Defense</div>
+          <p class="description">
+            Laser-based distance measurement system — methodologies and algorithms for precision distance measurements.
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Aug 2022 –<br>Feb 2023<span class="timeline-duration">7 mos</span></div>
+        <div class="timeline-content">
+          <h3>Undergraduate Researcher</h3>
+          <div class="subtitle">Ultra Fast Laser Laboratory (UFOLAB), Bilkent University</div>
+          <div class="advisor">Advisor: <a href="#">Prof. Fatih Omer Ilday</a></div>
+          <p class="description">
+            Research on nonlinear feedback-driven laser material interactions for laser sintering techniques.
+            <!-- Phase 2: Technical details -->
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ Teaching Experience ════ -->
+  <section class="section animate-in stagger-3" id="teaching">
+    <h2 class="section-header">Teaching Experience</h2>
+    <div class="timeline">
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Fall 2025 –<br>Spring 2026</div>
+        <div class="timeline-content">
+          <h3>Teaching Assistant</h3>
+          <div class="subtitle">Analog Electronics, Bilkent University</div>
+        </div>
+      </div>
+
+      <div class="timeline-entry">
+        <div class="timeline-date">Fall 2025 –<br>Spring 2026</div>
+        <div class="timeline-content">
+          <h3>Teaching Assistant</h3>
+          <div class="subtitle">Electronic Circuit Design, Bilkent University</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ Publications ════ -->
+  <section class="section animate-in stagger-4" id="publications">
+    <h2 class="section-header">Publications</h2>
+    <div>
+
+      <div class="pub-entry">
+        <div class="pub-title">
+          <a href="#">Single-Sided MPI without Selection Fields: Proof-of-Concept Results</a>
+        </div>
+        <div class="pub-authors">
+          <span class="me">S. Furkan Kahraman</span>, Ege Kor, Emine Ulku Saritas
+        </div>
+        <div class="pub-venue">
+          Published in International Journal on Magnetic Particle Imaging (IJMPI), 2025
+        </div>
+      </div>
+
+      <!-- Phase 2: Add more publications as they come -->
+
+    </div>
+  </section>
+
+  <!-- ════ Projects ════ -->
+  <section class="section animate-in stagger-5" id="projects">
+    <h2 class="section-header">Notable Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <h3>MFH-MPS Hybrid System</h3>
+        <div class="project-course">Graduate Research (M.Sc.)</div>
+        <p>Combined magnetic fluid hyperthermia (MFH) and magnetic particle spectrometer (MPS) experimental platform, synchronizing AWG-driven heating with real-time temperature and MPS signal acquisition.</p>
+        <div class="project-tags">
+          <span class="project-tag">MFH</span>
+          <span class="project-tag">MPS</span>
+          <span class="project-tag">MATLAB</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>Focus Coil Design for Magnetic Particle Imaging</h3>
+        <div class="project-course">Graduate Research (M.Sc.)</div>
+        <p>Electromagnetic design and optimization of focus/selection field coils for MPI systems, including field simulation, winding geometry, and impedance matching.</p>
+        <div class="project-tags">
+          <span class="project-tag">MPI</span>
+          <span class="project-tag">Coil Design</span>
+          <span class="project-tag">EM Simulation</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3><a href="https://sfurkankahraman.github.io/solenoiddesigner/" target="_blank" style="color:inherit; text-decoration:none;">Solenoid Designer</a></h3>
+        <div class="project-course">Personal Project · Browser App</div>
+        <p>Interactive electromagnetic coil design tool: 2D field heatmap, Smith chart impedance matching, 3D coil geometry rendering, and live analytics, all in a single-file web app.</p>
+        <div class="project-tags">
+          <span class="project-tag">RF/EM</span>
+          <span class="project-tag">JavaScript</span>
+          <span class="project-tag">Coil Design</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>Single-Sided MPI Depth Imaging</h3>
+        <div class="project-course">EEE 492 · Individual Research</div>
+        <p>Depth imaging using single-sided MPI to detect skin beneath nano-gels without selection fields.</p>
+        <div class="project-tags">
+          <span class="project-tag">MPI</span>
+          <span class="project-tag">MATLAB</span>
+          <span class="project-tag">Imaging</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>3-Axis Helmholtz Coil</h3>
+        <div class="project-course">EEE 399 · Summer Internship</div>
+        <p>Design and implementation of 3D Helmholtz coil for MPI head scanner sensor calibration.</p>
+        <div class="project-tags">
+          <span class="project-tag">Hardware</span>
+          <span class="project-tag">COMSOL</span>
+          <span class="project-tag">MPI</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>Single-Sided MPS Device</h3>
+        <div class="project-course">EEE 491 · Individual Research</div>
+        <p>Development of a single-sided MPS for detecting MNP response, targeting non-invasive tracking of nanogel degradation.</p>
+        <div class="project-tags">
+          <span class="project-tag">MPS</span>
+          <span class="project-tag">MNP</span>
+          <span class="project-tag">Hardware</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>Autonomous Aircraft</h3>
+        <div class="project-course">EEE 102 · Digital Circuit Design</div>
+        <p>FPGA-based drone with automatic balance, takeoff, and landing capabilities.</p>
+        <div class="project-tags">
+          <span class="project-tag">FPGA</span>
+          <span class="project-tag">VHDL</span>
+          <span class="project-tag">Embedded</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ Honors & Awards ════ -->
+  <section class="section animate-in stagger-6" id="honors">
+    <h2 class="section-header">Honors &amp; Awards</h2>
+    <div class="awards-list">
+
+      <div class="award-item">
+        <div class="award-year">2020</div>
+        <div class="award-text">
+          <strong>Ranked 61st</strong> among 2.5 million examinees in nationwide university entrance examinations, Turkey
+        </div>
+      </div>
+
+      <div class="award-item">
+        <div class="award-year">2020–25</div>
+        <div class="award-text">
+          <strong>Comprehensive scholarship</strong> covering full tuition and monthly stipend at Bilkent University
+        </div>
+      </div>
+
+      <div class="award-item">
+        <div class="award-year">2025</div>
+        <div class="award-text">
+          <strong>Research Excellence Award</strong> by Bilkent EEE Department
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ Skills ════ -->
+  <section class="section animate-in stagger-7" id="skills">
+    <h2 class="section-header">Skills</h2>
+    <div class="skills-grid">
+
+      <div class="skill-row">
+        <div class="skill-label">Languages</div>
+        <div class="skill-value">
+          <code>MATLAB</code> <code>Python</code> <code>C++</code> <code>Julia</code> <code>VHDL</code> <code>Assembly</code> <code>SPICE</code>
+        </div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-label">Applications</div>
+        <div class="skill-value">
+          <code>VSCode</code> <code>COMSOL</code> <code>Autodesk</code> <code>Lightroom</code>
+        </div>
+      </div>
+
+      <div class="skill-row">
+        <div class="skill-label">Languages</div>
+        <div class="skill-value">
+          English (IELTS 7) · German (Beginner) · Turkish (Native)
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ════ Footer ════ -->
+<footer>
+  <div class="footer-divider"></div>
+  <p>
+    &copy; 2025 Satılmış Furkan Kahraman · Built for
+    <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>
+  </p>
+</footer>
+
+<!-- ── Scripts ── -->
+<script>
+  // ── Theme Toggle ──
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+
+  // Check for saved preference or system preference
+  function getPreferredTheme() {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function setTheme(theme) {
+    html.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+
+  // Apply theme immediately
+  setTheme(getPreferredTheme());
+
+  themeToggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // Listen for OS theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // ── Scroll Progress Bar ──
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('scrollProgress').style.width = progress + '%';
+
+    // Nav shadow on scroll
+    document.getElementById('navbar').classList.toggle('scrolled', scrollTop > 10);
+  });
+
+  // ── Mobile Nav Toggle ──
+  document.getElementById('navToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // Close mobile nav on link click
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+
+  // ── Intersection Observer for Scroll Animations ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate-in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section').forEach(el => {
+    el.classList.remove('animate-in');
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
